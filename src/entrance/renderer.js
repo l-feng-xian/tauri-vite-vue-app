@@ -28,7 +28,7 @@ export default class Renderer {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setSize(this.sizes.width, this.sizes.height);
         this.renderer.setPixelRatio(this.sizes.pixelRation);
-        // this.renderer.setClearColor("#ffffff", 1)
+        this.renderer.setClearColor("#eaccd4", 1)
 
         this.status.domElement.style.position = "fixed";
         this.status.domElement.style.left = "0px";

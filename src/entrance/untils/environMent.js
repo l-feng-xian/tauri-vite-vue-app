@@ -39,9 +39,9 @@ export default class EnvironMent {
 
     setGui() {
         this.gui.addColor(this.obj, "colorObj").onChange(() =>{
-            this.sunLight.color.copy(this.obj.colorObj);
-            this.wordlight.color.copy(this.obj.colorObj);
-            console.log(this.resources.renderer.renderer);
+            // this.sunLight.color.copy(this.obj.colorObj);
+            // this.wordlight.color.copy(this.obj.colorObj);
+            // console.log(this.resources.renderer.renderer);
             this.resources.renderer.renderer.setClearColor(`rgb(${this.obj.colorObj.r*255}, ${this.obj.colorObj.g*255}, ${this.obj.colorObj.b*255})`)
         })
         this.gui.add(this.obj, "intensity", 0, 10).onChange(() =>{
@@ -51,10 +51,10 @@ export default class EnvironMent {
     }
 
     setTheme() {
-        this.thremeButton.addEventListener("change", (e) =>{
-            // console.log(e.target.checked);
-            document.body.classList.toggle("dark-theme");
-        })
+        // this.thremeButton.addEventListener("change", (e) =>{
+        //     // console.log(e.target.checked);
+        //     document.body.classList.toggle("dark-theme");
+        // })
     }
 
     resize() {
