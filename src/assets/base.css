@@ -1,0 +1,198 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    font-weight: normal;
+    vertical-align: baseline;
+}
+
+ol,
+ul,
+li {
+    list-style: none;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    height: 5px;
+    background-color: rgba(125, 125, 125, 0.7);
+    -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    width: 5px;
+    background-color: rgba(125, 125, 125, 0.7);
+    -webkit-border-radius: 6px;
+}
+
+/*清除浮动*/
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: inline-block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+.cursor-p {
+    cursor: pointer;
+}
+
+:root {
+    --light-bgc: #f3f6fd;
+    --dark-bgc: #111827;
+    --text-light: #000;
+    --text-dark: #fff;
+    --lightbox-bgc: #fff;
+    --darkbox-bgc: #1f2937;
+}
+
+.light-theme {
+    --text-color: var(--text-light);
+    --bgc-color: var(--light-bgc);
+    --box-bgc: var(--lightbox-bgc);
+}
+
+.dark-theme {
+    --text-color: var(--text-dark);
+    --bgc-color: var(--dark-bgc);
+    --box-bgc: var(--darkbox-bgc);
+}
+
+html,
+body {
+    background-color: var(--bgc-color);
+    height: 100vh;
+}
+
+@font-face {
+    font-family: "iconfont";
+    /* Project id  */
+    src: url('./iconfont.ttf?t=1678971104853') format('truetype');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 28px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--text-color);
+}
+
+.icon-icshare:before {
+    content: "\e63d";
+  }
+  
+  .icon-menu:before {
+    content: "\e61f";
+  }
+  
+  .icon-github-fill:before {
+    content: "\e885";
+  }
+  
+  .icon-taiyang:before {
+    content: "\e635";
+  }
+  
+  .icon-yueliang:before {
+    content: "\e70f";
+  }
+  
