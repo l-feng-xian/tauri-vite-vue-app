@@ -5,9 +5,9 @@
     </div>
     <div class="search"></div>
     <div class="bars">
-      <div class="light-b cursor-p" :class="{ 'light-d': !use_store.theme }" @click="themeCheack">
+      <div class="light-b cursor-p" :class="{ 'light-d': !theme }" @click="themeCheack">
         <div class="b-icon">
-          <span v-if="use_store.theme" class="iconfont">&#xe635;</span>
+          <span v-if="theme" class="iconfont">&#xe635;</span>
           <span v-else class="iconfont">&#xe70f;</span>
         </div>
       </div>
@@ -20,15 +20,17 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useStore } from "@/store/index";
+import { storeToRefs } from "pinia"
 
-const use_store = useStore()
+const {theme} = storeToRefs(useStore())
+console.log(theme);
 const themeCheack = () => {
-  use_store.theme = !use_store.theme
+  theme.value = !theme.value
   document.body.classList.toggle("dark-theme");
 }
 
 onMounted(() => {
-  if (use_store.theme) {
+  if (theme.value) {
     document.body.classList.remove("dark-theme");
   } else {
     document.body.classList.add("dark-theme");
@@ -43,6 +45,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   padding: 0 20px;
+  position: relative;
+  z-index: 1024;
 }
 
 .title-bar .search {
