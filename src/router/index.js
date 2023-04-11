@@ -14,9 +14,9 @@ const router = createRouter({
       component: () => import('../views/home.vue')
     },
     {
-      path: '/svgEdit',
-      name: 'svgEdit',
-      component: () => import('../views/svgEdit.vue')
+      path: '/canvasEdit',
+      name: 'canvasEdit',
+      component: () => import('../views/canvasEdit.vue')
     },
     {
       path: '/:catchAll(.*)',

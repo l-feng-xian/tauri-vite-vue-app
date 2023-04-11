@@ -4,7 +4,8 @@ export const useStore = defineStore('index', {
     persist: true, //pinia持久化
     state() {
         return {
-            theme: true
+            theme: true,
+            titleBar: true,
         }
     },
     getters: {

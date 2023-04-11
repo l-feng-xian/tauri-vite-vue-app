@@ -94,6 +94,10 @@ li {
     list-style: none;
 }
 
+#app {
+    height: 100%;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -137,22 +141,29 @@ li {
 :root {
     --light-bgc: #f3f6fd;
     --dark-bgc: #111827;
+
     --text-light: #000;
     --text-dark: #fff;
+
     --lightbox-bgc: #fff;
     --darkbox-bgc: #1f2937;
+
+    --light-border-c: #c2c2c2;
+    --dark-border-c: #2f2f2f;
 }
 
 .light-theme {
     --text-color: var(--text-light);
     --bgc-color: var(--light-bgc);
     --box-bgc: var(--lightbox-bgc);
+    --border-c: var(--light-border-c);
 }
 
 .dark-theme {
     --text-color: var(--text-dark);
     --bgc-color: var(--dark-bgc);
     --box-bgc: var(--darkbox-bgc);
+    --border-c: var(--dark-border-c);
 }
 
 html,
@@ -164,7 +175,7 @@ body {
 @font-face {
     font-family: "iconfont";
     /* Project id  */
-    src: url('./iconfont.ttf?t=1678971104853') format('truetype');
+    src: url('./iconfont.ttf?t=1681176203736') format('truetype');
 }
 
 .iconfont {
@@ -175,24 +186,3 @@ body {
     -moz-osx-font-smoothing: grayscale;
     color: var(--text-color);
 }
-
-.icon-icshare:before {
-    content: "\e63d";
-  }
-  
-  .icon-menu:before {
-    content: "\e61f";
-  }
-  
-  .icon-github-fill:before {
-    content: "\e885";
-  }
-  
-  .icon-taiyang:before {
-    content: "\e635";
-  }
-  
-  .icon-yueliang:before {
-    content: "\e70f";
-  }
-  

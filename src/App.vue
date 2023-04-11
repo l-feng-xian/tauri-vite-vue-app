@@ -1,6 +1,6 @@
 <template>
-  <div class="title-bar">
-    <div class="menu-icon">
+  <div class="title-bar" :class="{'title-bar-small': titleBar}">
+    <div class="menu-icon" @click="titleBarClick">
       <span class="iconfont cursor-p">&#xe61f;</span>
     </div>
     <div class="search"></div>
@@ -22,8 +22,7 @@ import { onMounted, ref } from 'vue';
 import { useStore } from "@/store/index";
 import { storeToRefs } from "pinia"
 
-const {theme} = storeToRefs(useStore())
-console.log(theme);
+const { theme, titleBar } = storeToRefs(useStore())
 const themeCheack = () => {
   theme.value = !theme.value
   document.body.classList.toggle("dark-theme");
@@ -36,16 +35,22 @@ onMounted(() => {
     document.body.classList.add("dark-theme");
   }
 })
+
+const titleBarClick = () => {
+  titleBar.value = !titleBar.value
+}
 </script>
 
 <style scoped>
 .title-bar {
   height: 50px;
-  /* background-color: var(--box-bgc); */
   display: flex;
   align-items: center;
   padding: 0 20px;
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
   z-index: 1024;
 }
 
@@ -104,5 +109,23 @@ onMounted(() => {
 
 .title-bar .bars .light-d {
   box-shadow: none !important;
+}
+
+.title-bar-small {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  display: block;
+}
+.menu-icon {
+  transform: rotate(0deg);
+  transition: all 0.4s ease-in-out;
+}
+.title-bar-small .menu-icon {
+  width: 28px;
+  height: 50px;
+  line-height: 50px;
+  user-select: none;
+  transform: rotate(180deg);
 }
 </style>
