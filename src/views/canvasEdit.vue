@@ -9,7 +9,7 @@
                 </ul> -->
             </div>
             <div class="canvas-edit-top-r" :style="{ width: (100 - editTLWidth) + '%' }">
-                <div class="canvas-edit-resize" @mousedown.stop="editResizeStart"></div>
+                <div id="editResize" class="canvas-edit-resize" @mousedown.stop="editResizeStart"></div>
                 <div style="flex: 1;">
                     r
                 </div>
@@ -24,17 +24,15 @@ import { ref, onMounted } from 'vue';
 import { useStore } from "@/store/index";
 import { storeToRefs } from "pinia"
 
-import CanvasEditInit from "@/CvEditEntrance/CanvasEditInit.js"
-import Rectangle from "@/CvEditEntrance/geometrys/Rectangle.js"
+import CanvasEditInit from "@/CvEditEntrance/CanvasEditInit.js";
 
 onMounted(() => {
-    const canvasEditInit = new CanvasEditInit({
+    new CanvasEditInit({
         width: document.getElementById('canvasEditView').offsetWidth,
         height: document.getElementById('canvasEditView').offsetHeight,
         element: document.getElementById('canvasEditView'),
         // treeModel: ['f']
     });
-    new Rectangle('add')
 })
 
 const { titleBar } = storeToRefs(useStore())

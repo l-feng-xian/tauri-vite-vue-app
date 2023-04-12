@@ -45,4 +45,6 @@
     width: 10px;
     border-left: 1px solid var(--border-c);
     border-right: 1px solid var(--border-c);
+    position: relative;
+    z-index: 10;
 }
