@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
 
-import Rectangle from "./geometrys/rectangle.js"
 import AssetsLoader from "./untils/assetsLoader.js"
+import Rectangle from "./geometrys/rectangle.js"
 
 export default class CanvasEditInit {
     static instance;
@@ -14,6 +14,7 @@ export default class CanvasEditInit {
         this.app = null
         this.setCanvas();
         this.assetsLoader = new AssetsLoader();
+        this.rectangle = new Rectangle();
         this.setOperateType = 'addRectangle';
         this.setOperateName = '';
         this.eventInfo = null;
@@ -65,54 +66,50 @@ export default class CanvasEditInit {
         const ctx = this.options.element.getElementsByTagName("canvas")[0];
         ctx.addEventListener("mousedown", e =>{
             console.log(e,'xxxxxxxxx---mousedown');
+            this.eventInfo = e;
             this.setOperateName = 'geomtrys' + this.geomtrysArr.length;
             this.geomtrysArr.push(this.setOperateName);
             this.addGeometrys(e, this.setOperateName);
-            ctx.addEventListener("mousemove", this.editGeometrys);
+            const editGeometrys = this.editGeometrys.bind(this);
+            let mouseupCount = 0
+
+            ctx.addEventListener("mousemove", editGeometrys);
+
             ctx.addEventListener("mouseup", (e) =>{
-                console.log('-----------------mouseup----------------------------');
-                ctx.removeEventListener("mousemove", this.editGeometrys);
+                if(mouseupCount === 0) {
+                    console.log(this.setOperateName,'-----------------mouseup----------------------------');
+                    ctx.removeEventListener("mousemove", editGeometrys);
+                    this.reviseGeometrys(e)
+                }
+                
+                mouseupCount += 1;
+                
             })
         })
-        // console.log(this.options.element.getElementsByTagName("canvas")[0]);
-        // console.log(this.app);
-        // this.app.stage.on("pointerdown", (e) =>{
-        //     console.log(e);
-        // })
-        // window.addEventListener("mousedown", (e) => {
-        //     if (this.options.width > e.pageX && this.options.height > e.pageY) {
-        //         this.eventInfo = e
-        //         let name = 'geomtrys' + this.geomtrysArr.length
-        //         this.addGeometrys(e, name)
-        //         console.log(e, e.pageX, e.pageY, e.target.localName, this.options.width, this.options.height);
-        //         window.addEventListener("mousemove", this.editGeometrys)
-
-        //         window.addEventListener("mouseup", this.reviseGeometrys)
-
-
-        //     }
-        // })
     }
 
     addGeometrys(e, name) {
-        console.log(e, name,'-----------------addGeometrys----------------------------');
+        console.log(e, name, this.rectangle, '-----------------addGeometrys----------------------------');
         if (this.operateType = "addRectangle") {
-            new Rectangle('add', {
-                name: name,
-                x: e.pageX,
-                y: e.pageY
-            })
+            this.rectangle.addRectangle(e.pageX, e.pageY, name)
+        }
+    }
+    editGeometrys(e) {
+        // console.log(e, this.setOperateName,e.pageX,e.pageY, '-----------------editGeometrys----------------------------');
+        if (this.operateType = "addRectangle") {
+           this.rectangle.editRectangle(this.eventInfo, e, this.setOperateName)
         }
     }
 
-    editGeometrys(e, name) {
-        console.log('-----------------editGeometrys----------------------------');
-        // console.log(e, e.pageX, e.pageX, 'mousemove');
-        // let width = this.eventInfo - pageX
-    }
-
-    reviseGeometrys(e, name) {
-        console.log('-----------------mouseup----------------------------');
-        window.removeEventListener("mousemove", this.editGeometrys)
+    reviseGeometrys(e) {
+        let width = this.eventInfo.pageX - e.pageX;
+        let height = this.eventInfo.pageY - e.pageY;
+        if(width === 0 || height === 0) {
+            const container = this.app.stage.getChildByName(this.setOperateName, true);
+            this.app.stage.removeChild(container);
+            console.log(this.app.stage,'remove');
+        } else {
+            this.rectangle.selectRectangle(this.setOperateName)
+        }
     }
 }
