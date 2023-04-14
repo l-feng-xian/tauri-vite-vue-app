@@ -15,29 +15,76 @@ export default class Rectangle {
         // console.log('xx');
         const container = new Container();
         container.name = name;
-        // container.position.set(10, 0);
-
-        // container.scale.set(1,1);
-        // container.anchor(0.5)
+        container.sortableChildren = true;
 
         const rectangle = new Graphics();
         rectangle.name = name + 'Graphics';
-        rectangle.lineStyle(1, '#fff', 1);
+        rectangle.lineStyle(0, '#fff', 1);
         rectangle.beginFill('#000', 0);
         rectangle.drawRoundedRect(0, 0, 0, 0, 0);
         rectangle.endFill();
-
-        // console.log(this.canvasEditInit.assetsLoaderFile, '[');
-        // const fd = new Sprite(this.assetsLoader.assetsFile['fd'])
-        // fd.name = name + 'fd';
-        // fd.anchor.set(0.5);
-        // fd.width = 20;
-        // fd.height = 20;
-        // fd.eventMode = 'dynamic';
-        // fd.cursor = 'ne-resize';
-        // fd.visible = false;
-
+        rectangle.zIndex = 0;
         container.addChild(rectangle);
+
+        const containerHelp = new Container();
+        containerHelp.name = name + "help";
+        containerHelp.sortableChildren = true;
+        containerHelp.zIndex = 1;
+        containerHelp.visible = false;
+
+        const containerHelpDrag1 = new Graphics();
+        containerHelpDrag1.name = name + 'containerHelpDrag1';
+        containerHelpDrag1.lineStyle(2, '#4F81FF', 1);
+        containerHelpDrag1.beginFill('#fff', 1);
+        containerHelpDrag1.drawRect(0, 0, 7, 7, 0);
+        containerHelpDrag1.endFill();
+        containerHelpDrag1.pivot.set(4, 4);
+        containerHelpDrag1.zIndex = 2;
+        containerHelp.addChild(containerHelpDrag1);
+
+        const containerHelpDrag2 = new Graphics();
+        containerHelpDrag2.name = name + 'containerHelpDrag2';
+        containerHelpDrag2.lineStyle(2, '#4F81FF', 1);
+        containerHelpDrag2.beginFill('#fff', 1);
+        containerHelpDrag2.drawRect(0, 0, 7, 7, 0);
+        containerHelpDrag2.endFill();
+        containerHelpDrag2.pivot.set(4, 4);
+        containerHelpDrag2.zIndex = 2;
+        containerHelp.addChild(containerHelpDrag2);
+
+        const containerHelpDrag3 = new Graphics();
+        containerHelpDrag3.name = name + 'containerHelpDrag3';
+        containerHelpDrag3.lineStyle(2, '#4F81FF', 1);
+        containerHelpDrag3.beginFill('#fff', 1);
+        containerHelpDrag3.drawRect(0, 0, 7, 7, 0);
+        containerHelpDrag3.endFill();
+        containerHelpDrag3.pivot.set(4, 4);
+        containerHelpDrag3.zIndex = 2;
+        containerHelp.addChild(containerHelpDrag3);
+
+        const containerHelpDrag4 = new Graphics();
+        containerHelpDrag4.name = name + 'containerHelpDrag4';
+        containerHelpDrag4.lineStyle(2, '#4F81FF', 1);
+        containerHelpDrag4.beginFill('#fff', 1);
+        containerHelpDrag4.drawRect(0, 0, 7, 7, 0);
+        containerHelpDrag4.endFill();
+        containerHelpDrag4.pivot.set(4, 4);
+        containerHelpDrag4.zIndex = 2;
+        containerHelp.addChild(containerHelpDrag4);
+
+        const containerHelpLine = new Graphics();
+        containerHelpLine.name = name + 'containerHelpLine';
+        containerHelpLine.lineStyle(2, '#4F81FF', 1);
+        containerHelpLine.beginFill('#fff', 0);
+        containerHelpLine.drawRect(0, 0, 0, 0, 0);
+        containerHelpLine.endFill();
+        containerHelpLine.zIndex = 1;
+        containerHelp.addChild(containerHelpLine);
+        
+        container.addChild(containerHelp)
+       
+
+        
 
         const containerBounds = container.getBounds();
         console.log(containerBounds, (containerBounds.width + -containerBounds.x) / 2);
@@ -85,23 +132,41 @@ export default class Rectangle {
             drawRect.y = endEvent.pageY;
         }
         const container = this.appStage.getChildByName(name, true);
-        const containerBounds = container.getBounds();
-        const child = this.appStage.getChildByName(name + 'Graphics', true);
+        // const containerBounds = container.getBounds();
+        container.position.set(drawRect.x, drawRect.y);
+        
+        const rectangle = this.appStage.getChildByName(name + 'Graphics', true);
+        rectangle.clear();
+        rectangle.lineStyle(0, '#fff', 1);
+        rectangle.beginFill('#cccccc', 1);
+        rectangle.drawRoundedRect(0, 0,  drawRect.width, drawRect.height, 0);
+        rectangle.endFill();
 
-        child.clear();
-        child.lineStyle(1, '#fff', 1);
-        child.beginFill('#000', 0);
-        child.drawRoundedRect(0, 0,  drawRect.width, drawRect.height, 0);
-        child.endFill();
+        const containerHelp = this.appStage.getChildByName(name + 'help', true);
+        containerHelp.visible = true;
 
-        container.position.set(drawRect.x, drawRect.y)
+        const containerHelpLine =  this.appStage.getChildByName(name + 'containerHelpLine', true);
+        containerHelpLine.clear();
+        containerHelpLine.lineStyle(1, '#4F81FF', 1);
+        containerHelpLine.beginFill('#000', 0);
+        containerHelpLine.drawRoundedRect(0, 0, drawRect.width, drawRect.height, 0);
+        containerHelpLine.endFill();
 
-        child.width = drawRect.width;
-        child.height = drawRect.height;
+        const containerHelpDrag1 =  this.appStage.getChildByName(name + 'containerHelpDrag1', true);
+        containerHelpDrag1.x = 0;
+        containerHelpDrag1.y = 0;
 
-        // childfd.x = 100;
-        // childfd.y = 100;
-        console.log(containerBounds, '--container--child');
+        const containerHelpDrag2 =  this.appStage.getChildByName(name + 'containerHelpDrag2', true);
+        containerHelpDrag2.x = drawRect.width;
+        containerHelpDrag2.y = 0;
+
+        const containerHelpDrag3 =  this.appStage.getChildByName(name + 'containerHelpDrag3', true);
+        containerHelpDrag3.x = drawRect.width;
+        containerHelpDrag3.y = drawRect.height;
+
+        const containerHelpDrag4 =  this.appStage.getChildByName(name + 'containerHelpDrag4', true);
+        containerHelpDrag4.x = 0;
+        containerHelpDrag4.y = drawRect.height;
     }
 
     selectRectangle(name) {

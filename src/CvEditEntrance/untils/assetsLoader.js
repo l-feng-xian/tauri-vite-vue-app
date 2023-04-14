@@ -13,8 +13,8 @@ export default class AssetsLoader extends EventEmitter {
     }
 
     async loaders() {
-        // const fd = await Assets.load("/image/fd.png");
-        const fd = await Assets.load("/棱角球花贴图.png")
+        const fd = await Assets.load("/image/helpr.png");
+        // const fd = await Assets.load("/棱角球花贴图.png")
         this.assetsFile['fd'] = fd;
         this.emit("loadersOver", this.assetsFile)
     }

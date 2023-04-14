@@ -36,7 +36,7 @@ export default class CanvasEditInit {
             antialias: true,
             autoDensity: true,
             backgroundAlpha: 1,
-            backgroundColor: '0x000000',
+            backgroundColor: '#000000',
             clearBeforeRender: true,
             context: null,
             hello: true,
@@ -48,6 +48,7 @@ export default class CanvasEditInit {
 
         this.options.element.appendChild(app.view);
         app.stage.eventMode = 'static';
+        app.stage.sortableChildren = true;
         this.app = app;
         this.eventListener();
     }
@@ -65,7 +66,11 @@ export default class CanvasEditInit {
     eventListener() {
         const ctx = this.options.element.getElementsByTagName("canvas")[0];
         ctx.addEventListener("mousedown", e =>{
-            console.log(e,'xxxxxxxxx---mousedown');
+            console.log(e,this.geomtrysArr,'xxxxxxxxx---mousedown');
+            this.geomtrysArr.map(m =>{
+                const geomtryHelp = this.app.stage.getChildByName(m + 'help', true);
+                geomtryHelp.visible = false;
+            })
             this.eventInfo = e;
             this.setOperateName = 'geomtrys' + this.geomtrysArr.length;
             this.geomtrysArr.push(this.setOperateName);
@@ -108,6 +113,8 @@ export default class CanvasEditInit {
             const container = this.app.stage.getChildByName(this.setOperateName, true);
             this.app.stage.removeChild(container);
             console.log(this.app.stage,'remove');
+            let index = this.geomtrysArr.indexOf(this.setOperateName);
+            this.geomtrysArr.splice(index, 1);
         } else {
             this.rectangle.selectRectangle(this.setOperateName)
         }
