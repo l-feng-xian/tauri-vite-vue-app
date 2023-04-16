@@ -18,7 +18,8 @@ export default class CanvasEditInit {
         this.setOperateType = 'addRectangle';
         this.setOperateName = '';
         this.eventInfo = null;
-        this.geomtrysArr = []
+        this.geomtrysArr = [];
+        this.addNum = 0;
 
         this.assetsLoader.on("loadersOver", (file) => {
             this.assetsLoaderFile = file;
@@ -47,7 +48,7 @@ export default class CanvasEditInit {
         })
 
         this.options.element.appendChild(app.view);
-        app.stage.eventMode = 'static';
+        // app.stage.eventMode = 'static';
         app.stage.sortableChildren = true;
         this.app = app;
         this.eventListener();
@@ -66,6 +67,8 @@ export default class CanvasEditInit {
     eventListener() {
         const ctx = this.options.element.getElementsByTagName("canvas")[0];
         ctx.addEventListener("mousedown", e =>{
+            if(this.addNum >= 2) return;
+            this.addNum += 1;
             console.log(e,this.geomtrysArr,'xxxxxxxxx---mousedown');
             this.geomtrysArr.map(m =>{
                 const geomtryHelp = this.app.stage.getChildByName(m + 'help', true);
@@ -76,7 +79,7 @@ export default class CanvasEditInit {
             this.geomtrysArr.push(this.setOperateName);
             this.addGeometrys(e, this.setOperateName);
             const editGeometrys = this.editGeometrys.bind(this);
-            let mouseupCount = 0
+            let mouseupCount = 0;
 
             ctx.addEventListener("mousemove", editGeometrys);
 

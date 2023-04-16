@@ -6,6 +6,7 @@ export default class Rectangle {
         this.canvasEditInit = new CanvasEditInit();
         this.appStage = this.canvasEditInit.app.stage;
         this.assetsLoader = this.canvasEditInit.assetsLoader;
+        this.dragTarget = null;
     }
 
     /**
@@ -16,6 +17,8 @@ export default class Rectangle {
         const container = new Container();
         container.name = name;
         container.sortableChildren = true;
+        container.eventMode = 'static';
+        container.on("pointerdown",(() => this.onDragStart(container)), container);
 
         const rectangle = new Graphics();
         rectangle.name = name + 'Graphics';
@@ -40,6 +43,8 @@ export default class Rectangle {
         containerHelpDrag1.endFill();
         containerHelpDrag1.pivot.set(4, 4);
         containerHelpDrag1.zIndex = 2;
+        containerHelpDrag1.eventMode = 'static';
+        containerHelpDrag1.on("pointerdown",(() => this.onDragHelpStart(containerHelpDrag1, '1')), container);
         containerHelp.addChild(containerHelpDrag1);
 
         const containerHelpDrag2 = new Graphics();
@@ -179,5 +184,52 @@ export default class Rectangle {
         // this.canvasEditInit.app.ticker.add((delta) => {
         //     container.rotation -= 0.01 * delta;
         // })
+    }
+
+    onDragStart(dragTarget) {
+        console.log(this.canvasEditInit.geomtrysArr,dragTarget, "-----------this.appStage------------------")
+        this.canvasEditInit.geomtrysArr.map(m =>{
+            if(m !== dragTarget.name) {
+                const geomtryHelp = this.appStage.getChildByName(m + 'help', true);
+                geomtryHelp.visible = false;
+            } else {
+                const geomtryHelp = this.appStage.getChildByName(m + 'help', true);
+                geomtryHelp.visible = true;
+            }
+        })
+        dragTarget.alpha = 0.5;
+        this.dragTarget = dragTarget;
+        const onDragMoveF = this.onDragMove;
+        dragTarget.on("pointermove", onDragMoveF.bind(this));
+        dragTarget.on("pointerup", (() => this.onDragEnd(onDragMoveF)));
+        dragTarget.on("pointerupoutside", (() => this.onDragEnd(onDragMoveF)));
+       
+        console.log(dragTarget, '-------onDragStart----------');
+    }
+
+    onDragMove(e) {
+        if(this.dragTarget) {
+            console.log(this.dragTarget.position, '-----------this.dragTarget');
+            const body = document.querySelector("body")
+            body.style.cursor= "move"
+        
+            this.dragTarget.parent.toLocal(e.global, null, this.dragTarget.position);
+            console.log(e, '----onDragMove-------');
+        }
+    }
+
+    onDragEnd(onDragMoveF) {
+        if (this.dragTarget) {
+            const body = document.querySelector("body")
+            body.style.cursor= "default"
+            console.log('-----onDragEnd------------');
+            this.dragTarget.off("pointermove", onDragMoveF);
+            this.dragTarget.alpha = 1;
+            this.dragTarget = null;
+        }
+    }
+
+    onDragHelpStart(target, i) {
+        console.log(target, i);
     }
 }
