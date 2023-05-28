@@ -1,6 +1,6 @@
 <template>
-    <!-- <canvas id="threeDmodel"></canvas>
-    <div id="g_ui" style="position: fixed; right: 0;top: 0;"></div> -->
+    <canvas id="threeDmodel"></canvas>
+    <div id="g_ui" style="position: fixed; right: 0;top: 0;"></div>
     <!-- <div class="messagebox">
       <input type="checkbox" name="" id="threm_chackbox">
       <p>Label标签内文字更加需要填写
@@ -13,12 +13,12 @@
   </template>
   
   <script setup>
-  // import Entrance from "../entrance/entrance.js"
-  // import { onMounted } from "vue";
+  import Entrance from "../entrance/test.js"
+  import { onMounted } from "vue";
   
-  // onMounted(() => {
-  //   const entrance = new Entrance(document.getElementById("threeDmodel"))
-  // })
+  onMounted(() => {
+    const entrance = new Entrance(document.getElementById("threeDmodel"))
+  })
   </script>
   
   <style scoped></style>
