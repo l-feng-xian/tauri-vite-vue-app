@@ -1,5 +1,5 @@
 <template>
-  <div class="title-bar" :class="{'title-bar-small': titleBar}">
+  <!-- <div class="title-bar" :class="{'title-bar-small': titleBar}">
     <div class="menu-icon" @click="titleBarClick">
       <span class="iconfont cursor-p">&#xe61f;</span>
     </div>
@@ -13,7 +13,7 @@
       </div>
       <span class="iconfont cursor-p">&#xe885;</span>
     </div>
-  </div>
+  </div> -->
   <RouterView />
 </template>
 

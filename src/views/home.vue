@@ -13,11 +13,11 @@
   </template>
   
   <script setup>
-  import Entrance from "../entrance/test.js"
+  import InitInterface from "@/3dProject/index/initInterface";
   import { onMounted } from "vue";
   
   onMounted(() => {
-    const entrance = new Entrance(document.getElementById("threeDmodel"))
+    const initInterface = new InitInterface(document.getElementById("threeDmodel"))
   })
   </script>
   
