@@ -172,6 +172,10 @@ body {
     height: 100vh;
 }
 
+canvas {
+    display: block;
+}
+
 @font-face {
     font-family: "iconfont";
     /* Project id  */

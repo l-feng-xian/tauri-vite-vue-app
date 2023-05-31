@@ -16,7 +16,9 @@ export default class AddModel {
             x: 4,
             y: 0.5,
             z: 0
-        }
+        };
+        this._xCross = 0;
+        this._yCross = 0;
         this.setModels();
     }
 
@@ -37,8 +39,21 @@ export default class AddModel {
         this.scene.add(dirLight);
         // const helper = new THREE.CameraHelper(dirLight.shadow.camera);
         // this.scene.add(helper);
+        // this.setCanvas();
 
-        this.cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ color: 0x00ffff }));
+        this.cubeTexture = new THREE.Texture(undefined, THREE.UVMapping, THREE.RepeatWrapping, THREE.RepeatWrapping);
+        this.cubeTexture.colorSpace = THREE.SRGBColorSpace;
+        // this.__pcanvas = new CanvasTexture(this.cubeTexture);
+        const cubeMaterial = new THREE.MeshBasicMaterial({ map: this.cubeTexture });
+        this.cubeBoxGeometry = new THREE.BoxGeometry(1, 1, 1);
+        let uvs = this.cubeBoxGeometry.attributes.uv.array;
+        // Set a specific texture mapping.
+        // for (let i = 0; i < uvs.length; i++) {
+
+        //     uvs[i] *= 2;
+
+        // }
+        this.cube = new THREE.Mesh(this.cubeBoxGeometry, cubeMaterial);
         this.cube.castShadow = true;
         this.cube.name = 'cube';
         this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
@@ -67,6 +82,31 @@ export default class AddModel {
         document.addEventListener('mousedown', this.onPointerDown.bind(this));
     }
 
+    setCanvas() {
+        this._canvas = document.createElement('canvas');
+        this._canvas.width = this._canvas.height = 1024;
+        this._context2D = this._canvas.getContext('2d');
+        this._canvas.style.transform = 'scale(0.5)'
+        this._canvas.style.position = 'fixed';
+        this._canvas.style.bottom = '-25%';
+        this._canvas.style.left = '-25%';
+
+        document.body.appendChild(this._canvas)
+
+        const bgimg = document.createElement('img');
+        bgimg.crossOrigin = '';
+        bgimg.src = './uv_grid_opengl.jpg';
+        bgimg.addEventListener('load', () => {
+            console.log('img----load');
+            this._canvas.width = bgimg.naturalWidth;
+            this._canvas.height = bgimg.naturalHeight;
+            this._context2D.drawImage(bgimg, 0, 0);
+
+            this.cubeTexture.image = this._canvas;
+            this.cubeTexture.needsUpdate = true;
+        })
+    }
+
     onPointerDown(event) {
         this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
@@ -75,6 +115,11 @@ export default class AddModel {
         if (intersects.length > 0) {
             const model = this.resources.clickResources.find(f => f.name === intersects[0].object.name)
             if (intersects[0].object.name && model) {
+                // const uv = intersects[0].uv;
+                // intersects[0].object.material.map.transformUv(uv);
+                // this.setCrossPosition( uv.x, uv.y );
+                // console.log(uv);
+                // return;
                 console.log(model, intersects[0], intersects[0].object.position, this.camera);
 
 
@@ -100,5 +145,19 @@ export default class AddModel {
             }
 
         }
+    }
+
+    setCrossPosition(x,y) {
+
+        this._xCross = x * this._canvas.width;
+        this._yCross = y * this._canvas.height;
+
+        console.log(this._xCross, this._yCross, 'setCrossPosition');
+
+        this._context2D.fillStyle = "rgba(0,0,0)"
+
+        this._context2D.rect(this._xCross,this._yCross,30,30);
+        this._context2D.fill();
+        this.cubeTexture.needsUpdate = true;
     }
 }

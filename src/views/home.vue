@@ -1,25 +1,36 @@
 <template>
-    <canvas id="threeDmodel"></canvas>
-    <div id="g_ui" style="position: fixed; right: 0;top: 0;"></div>
-    <!-- <div class="messagebox">
-      <input type="checkbox" name="" id="threm_chackbox">
-      <p>Label标签内文字更加需要填写
-        Label标签内for属性的值为自定义，一般与想实现点击会触发控件对象的ID对应相同。</p>
-    </div> -->
-    <!-- <nav>
-      <RouterLink to="/home">Home</RouterLink>
-      <RouterLink to="/svgEdit">svgEdit</RouterLink>
-    </nav> -->
-  </template>
+  <canvas id="threeDmodel"></canvas>
+  <div id="g_ui" style="position: fixed; right: 0;top: 0;"></div>
+  <div class="uvedit-box">
+  </div>
+</template>
   
-  <script setup>
-  import InitInterface from "@/3dProject/index/initInterface";
-  import { onMounted } from "vue";
+<script setup>
+import InitInterface from "@/3dProject/index/initInterface";
+import {ref, onMounted } from "vue";
+
+onMounted(() => {
+  const initInterface = new InitInterface(document.getElementById("threeDmodel"))
+})
+
+let editTLWidth = ref(20);
+let dragOffsetX = 0;
+const editResizeStart = ((e) => {
+  dragOffsetX = e.offsetX
+  window.addEventListener('mousemove', editResizeEnter)
+
+  window.addEventListener('mouseup', (e => {
+    window.removeEventListener('mousemove', editResizeEnter)
+  }))
+})
+
+const editResizeEnter = ((e) => {
+  if (e.pageX === 0) return;
+  let dragX = ((e.pageX - dragOffsetX) / window.innerWidth).toFixed(6);
+  editTLWidth.value = 100 - (dragX * 100);
+})
+</script>
   
-  onMounted(() => {
-    const initInterface = new InitInterface(document.getElementById("threeDmodel"))
-  })
-  </script>
-  
-  <style scoped></style>
-  
+<style lang="scss" scoped>
+@import "@/assets/css/uvedit.scss";
+</style>
