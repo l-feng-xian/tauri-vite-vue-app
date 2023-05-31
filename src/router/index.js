@@ -12,6 +12,13 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/home.vue'),
+      children: [
+        {
+          path: 'uvEdit',
+          name: 'uvEdit',
+          component: () => import('../views/uvEdit.vue')
+        }
+      ]
     },
     {
       path: '/canvasEdit',
@@ -34,4 +41,4 @@ router.beforeEach((to, from) => {
   // return false
 })
 
-export default router
+export default router;

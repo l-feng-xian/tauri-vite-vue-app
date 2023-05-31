@@ -2,6 +2,8 @@ import * as THREE from "three"
 import InitInterface from "../initInterface";
 import GUI from "lil-gui";
 import GASP from "gsap";
+import router from "@/router";
+import { vuEditStore } from "@/store/uvEdit";
 
 export default class AddModel {
     constructor() {
@@ -70,7 +72,8 @@ export default class AddModel {
         // this.scene.add(gridHelper)
 
         this.gui.add(this.cubep, 'x', 0, 40).onChange(() => {
-            this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
+            // this.camera.perspectiveCamera.lookAt(this.cubep.x,0,0);
+            // this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
         })
         this.gui.add(this.cubep, 'y', 0, 40).onChange(() => {
             this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
@@ -122,7 +125,7 @@ export default class AddModel {
                 // return;
                 console.log(model, intersects[0], intersects[0].object.position, this.camera);
 
-
+                router.push("uvEdit");
                 if (!model.animation) {
                     GASP.to(this.camera.controls.target, {
                         x: intersects[0].object.position.x,

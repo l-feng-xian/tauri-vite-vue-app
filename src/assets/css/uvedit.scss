@@ -1,9 +1,103 @@
 .uvedit-box {
     position: fixed;
-    top: 0;
+    left: 0;
     right: 0;
     bottom: 0;
     z-index: 999;
     background-color: var(--box-bgc);
+    height: 40%;
+    min-height: 400px;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    // border-top: 1px solid var(--border-c);
+    border: 6px solid #cdcdcd;
     display: flex;
+    // transform: translateY(80%);
+    animation: uveditshow 0.8s ease-out;
+
+    @keyframes uveditshow {
+        from {
+            transform: translateY(100%);
+        }
+
+        to {
+            transform: translateY(0%);
+        }
+    }
+
+    .uvedit-l {
+        width: 25%;
+        min-width: 400px;
+
+        .uvedit-l-bar {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .uvedit-l-content {
+            height: calc(100% - 50px);
+
+            .uvedit-l-resource {
+                width: 100%;
+                height: 100%;
+                display: grid;
+                overflow-y: auto;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: 100px;
+                grid-row-gap: 10px;
+                grid-column-gap: 10px;
+                padding: 0 10px 10px 10px;
+                box-sizing: border-box;
+
+                .uvedit-resource-i {
+                    height: 100px;
+                    border-radius: 6px;
+                    border: 1px solid #727272;
+                    box-sizing: border-box;
+                }
+            }
+
+            .empty {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .uvedit-c {
+        flex: 1;
+        border-left: 6px solid #cdcdcd;
+        border-right: 6px solid #cdcdcd;
+        box-sizing: border-box;
+        background-image: #fff;
+
+        .uvedit-c-bar {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .uvedit-c-content {
+            height: calc(100% - 50px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image:
+                linear-gradient(45deg, rgba(0, 0, 0, .25) 25%, transparent 0, transparent 75%, rgba(0, 0, 0, .25) 0),
+                linear-gradient(45deg, rgba(0, 0, 0, .25) 25%, transparent 0, transparent 75%, rgba(0, 0, 0, .25) 0);
+            background-color: #eee;
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            position: relative;
+            overflow: hidden;
+        }
+    }
+
+    .uvedit-r {
+        width: 25%;
+        min-width: 400px;
+    }
 }
