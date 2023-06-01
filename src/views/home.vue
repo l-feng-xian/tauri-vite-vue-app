@@ -7,9 +7,15 @@
 <script setup>
 import InitInterface from "@/3dProject/index/initInterface";
 import { onMounted } from "vue";
+import EmitBus from "@/untils/emitBus.js";
 
 onMounted(() => {
-  const initInterface = new InitInterface(document.getElementById("threeDmodel"))
+  const initInterface = new InitInterface(document.getElementById("threeDmodel"));
+  EmitBus.on('getActiveModel', () => {
+    const activeModel = initInterface.addModel.activeModel;
+    initInterface.setModelTexture.setTexture(activeModel);
+    console.log(activeModel,'getActiveModel----------');
+  })
 })
 
 </script>

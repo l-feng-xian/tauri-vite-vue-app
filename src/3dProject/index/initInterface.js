@@ -5,6 +5,7 @@ import Renderer from "./untils/renderer";
 import Time from "./untils/time";
 import AddModel from "./untils/addModel";
 import resources from "./untils/resources";
+import SetModelTexture from "./untils/setModelTexture";
 
 export default class InitInterface {
     static instance;
@@ -19,6 +20,7 @@ export default class InitInterface {
         this.sizes = new Sizes();
         this.resources = resources;
         this.camera = new Camera();
+        this.setModelTexture = new SetModelTexture();
         this.addModel = new AddModel();
         this.renderer = new Renderer();
         this.time = new Time();

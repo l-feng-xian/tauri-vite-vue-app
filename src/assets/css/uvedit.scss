@@ -27,7 +27,7 @@
 
     .uvedit-l {
         width: 25%;
-        min-width: 400px;
+        min-width: 300px;
 
         .uvedit-l-bar {
             height: 50px;
@@ -71,7 +71,6 @@
         border-left: 6px solid #cdcdcd;
         border-right: 6px solid #cdcdcd;
         box-sizing: border-box;
-        background-image: #fff;
 
         .uvedit-c-bar {
             height: 50px;
@@ -93,11 +92,33 @@
             background-position: 0 0, 15px 15px;
             position: relative;
             overflow: hidden;
+            .uvedit-umap {
+                position: absolute;
+            }
         }
     }
 
     .uvedit-r {
         width: 25%;
-        min-width: 400px;
+        min-width: 300px;
     }
+}
+
+.uvedit-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--el-border-color);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px;
+    background-color: #409eff;
+}
+
+.uvedit-icon:hover {
+    border-color: var(--el-border-color-darker);
+
 }

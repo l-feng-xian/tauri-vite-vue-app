@@ -18,11 +18,18 @@
         </div>
         <div class="uvedit-c">
             <div class="uvedit-c-bar">
-                <el-color-picker v-model="color" show-alpha :predefine="predefineColors" @change="colorChange"/>
-                <el-input-number style="margin:0 10px;width: 110px;" v-model="brushSize" :min="1" :max="100" @change="brushSizeChange" />
+                <div class="uvedit-icon" @click="viewLockChange">
+                    <el-icon color="#fff"><Lock  v-if="viewLock"/><Unlock v-else/></el-icon>
+                </div>
+                
+                <el-color-picker v-model="color" show-alpha :predefine="predefineColors" @change="colorChange" />
+                <el-input-number style="margin:0 10px;width: 110px;" v-model="brushSize" :min="1" :max="100"
+                    @change="brushSizeChange" />
             </div>
             <div class="uvedit-c-content">
-                <div class="uvedit-umap"></div>
+                <div class="uvedit-umap">
+                    <canvas id="uveditCanvas" width="0" height="0"></canvas>
+                </div>
             </div>
         </div>
         <div class="uvedit-r"></div>
@@ -30,7 +37,17 @@
 </template>
     
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted} from "vue";
+import EmitBus from "@/untils/emitBus.js";
+
+// EmitBus.on("objectUV", ((moedl, uv) => {
+//     // EmitBus.emit("setModelTexture", moedl)
+//     console.log(moedl, uv, '---EmitBus----');
+// }))
+onMounted(() => {
+    EmitBus.emit("getActiveModel");
+    console.log('==================================');
+})
 
 let resourceList = ref([]);
 const upResource = () => {
@@ -56,6 +73,13 @@ const upResource = () => {
     })
 }
 
+//锁定视图
+let viewLock = ref(false);
+const viewLockChange = () =>{
+    viewLock.value = !viewLock.value
+}
+
+//改变画笔颜色
 let color = ref('rgba(0, 0, 0, 1)')
 const predefineColors = ref([
     '#ff4500',
@@ -70,11 +94,13 @@ const predefineColors = ref([
     '#c71585',
 ])
 
-const colorChange = (e) =>{
+const colorChange = (e) => {
     console.log(e);
 }
+
+//改变画笔尺寸
 let brushSize = ref(0);
-const brushSizeChange = (e) =>{
+const brushSizeChange = (e) => {
     console.log(e);
 }
 
