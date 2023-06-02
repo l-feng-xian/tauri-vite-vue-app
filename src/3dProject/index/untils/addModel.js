@@ -8,6 +8,7 @@ import EmitBus from "@/untils/emitBus.js";
 export default class AddModel {
     constructor() {
         this.initInterface = new InitInterface();
+        this.canvas = this.initInterface.canvas;
         this.scene = this.initInterface.scene;
         this.camera = this.initInterface.camera;
         this.raycaster = new THREE.Raycaster();
@@ -19,9 +20,8 @@ export default class AddModel {
             y: 0.5,
             z: 0
         };
-        this._xCross = 0;
-        this._yCross = 0;
         this.activeModel = null;
+
         this.setModels();
     }
 
@@ -69,10 +69,18 @@ export default class AddModel {
             this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
         })
 
-        document.addEventListener('mousedown', this.onPointerDown.bind(this));
+        this.canvas.addEventListener('mousedown', this.onPointerDown.bind(this));
     }
 
     onPointerDown(event) {
+        let onPointerMove = this.onPointerMove.bind(this);
+        this.canvas.addEventListener('mousemove', onPointerMove);
+        document.addEventListener('mouseup', () => {
+            if (onPointerMove) {
+                this.canvas.removeEventListener('mousemove', onPointerMove);
+                onPointerMove = null;
+            }
+        });
         if (this.activeModel) return;
         this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
         this.pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
@@ -82,15 +90,7 @@ export default class AddModel {
             this.activeModel = this.resources.clickResources[intersects[0].object.name];
 
             if (intersects[0].object.name && this.activeModel) {
-                const uv = intersects[0].uv;
-                // intersects[0].object.material.map.transformUv(uv);
-                // this.setCrossPosition( uv.x, uv.y );
-                // console.log(uv);
-                // return;
-                // console.log(model, intersects[0], intersects[0].object.position, this.camera);
-
                 EmitBus.emit("getActiveModel");
-
                 router.push("uvEdit");
                 this.activeModel.animation = true;
                 GASP.to(this.camera.controls.target, {
@@ -110,17 +110,20 @@ export default class AddModel {
         }
     }
 
-    setCrossPosition(x, y) {
-
-        this._xCross = x * this._canvas.width;
-        this._yCross = y * this._canvas.height;
-
-        console.log(this._xCross, this._yCross, 'setCrossPosition');
-
-        this._context2D.fillStyle = "rgba(0,0,0)"
-
-        this._context2D.rect(this._xCross, this._yCross, 30, 30);
-        this._context2D.fill();
-        this.cubeTexture.needsUpdate = true;
+    onPointerMove(event) {
+        if (this.camera.controls && !this.camera.controls.enabled) {
+            this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+            this.pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
+            this.raycaster.setFromCamera(this.pointer, this.camera.perspectiveCamera);
+            const intersects = this.raycaster.intersectObjects(this.scene.children, false);
+            if (intersects.length > 0) {
+                const activeModel = this.activeModel;
+                if (intersects[0].object.name === activeModel.name) {
+                    const uv = intersects[0].uv;
+                    intersects[0].object.material.map.transformUv(uv);
+                    EmitBus.emit("drawModelTexture", uv);
+                }
+            }
+        }
     }
 }

@@ -40,4 +40,9 @@ export default class SetModelTexture {
             this.activeModel.material = new THREE.MeshBasicMaterial({map: texture});
         })
     }
+
+    updete() {
+        this.activeModel.material.map.needsUpdate = true;
+        // console.log( this.activeModel.material.map.needsUpdate = true);
+    }
 }

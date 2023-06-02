@@ -19,9 +19,11 @@
         <div class="uvedit-c">
             <div class="uvedit-c-bar">
                 <div class="uvedit-icon" @click="viewLockChange">
-                    <el-icon color="#fff"><Lock  v-if="viewLock"/><Unlock v-else/></el-icon>
+                    <el-icon color="#fff">
+                        <Unlock v-if="viewLock" />
+                        <Lock v-else />
+                    </el-icon>
                 </div>
-                
                 <el-color-picker v-model="color" show-alpha :predefine="predefineColors" @change="colorChange" />
                 <el-input-number style="margin:0 10px;width: 110px;" v-model="brushSize" :min="1" :max="100"
                     @change="brushSizeChange" />
@@ -37,17 +39,25 @@
 </template>
     
 <script setup>
-import { ref, onMounted} from "vue";
+import { ref, onMounted } from "vue";
 import EmitBus from "@/untils/emitBus.js";
 
-// EmitBus.on("objectUV", ((moedl, uv) => {
-//     // EmitBus.emit("setModelTexture", moedl)
-//     console.log(moedl, uv, '---EmitBus----');
-// }))
 onMounted(() => {
     EmitBus.emit("getActiveModel");
     console.log('==================================');
 })
+
+EmitBus.on("drawModelTexture", (uv) => {
+    const uveditCanvas = document.getElementById("uveditCanvas");
+    const uveditCanvasCtx2d = uveditCanvas.getContext("2d");
+    let _xCross = uv.x * uveditCanvas.width;
+    let _yCross = uv.y * uveditCanvas.height;
+    uveditCanvasCtx2d.fillStyle = color.value
+
+    uveditCanvasCtx2d.rect(_xCross, _yCross, 30, 30);
+    uveditCanvasCtx2d.fill();
+    // EmitBus.emit("drawModelTextureOver");
+});
 
 let resourceList = ref([]);
 const upResource = () => {
@@ -74,9 +84,10 @@ const upResource = () => {
 }
 
 //锁定视图
-let viewLock = ref(false);
-const viewLockChange = () =>{
+let viewLock = ref(true);
+const viewLockChange = () => {
     viewLock.value = !viewLock.value
+    EmitBus.emit("setControlLock", viewLock.value);
 }
 
 //改变画笔颜色
@@ -104,8 +115,8 @@ const brushSizeChange = (e) => {
     console.log(e);
 }
 
+
+
 </script>
     
-<style lang="scss" scoped>
-@import "@/assets/css/uvedit.scss";
-</style>
+<style lang="scss" scoped>@import "@/assets/css/uvedit.scss";</style>

@@ -43,6 +43,14 @@ export default class Camera {
         })
     }
 
+    setControlsLock(viewLock) {
+        if(viewLock) {
+            this.controls.enabled = true
+        } else {
+            this.controls.enabled = false
+        }
+    }
+
     resize() {
         this.perspectiveCamera.aspect = this.sizes.aspect;
         this.perspectiveCamera.updateProjectionMatrix();
