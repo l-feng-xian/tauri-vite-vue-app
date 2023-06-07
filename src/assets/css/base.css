@@ -150,6 +150,9 @@ li {
 
     --light-border-c: #5c5c5c;
     --dark-border-c: #2f2f2f;
+
+    --light-shadow-c: #ededed;
+    --dark-shadow-c: #000;
 }
 
 .light-theme {
@@ -157,6 +160,7 @@ li {
     --bgc-color: var(--light-bgc);
     --box-bgc: var(--lightbox-bgc);
     --border-c: var(--light-border-c);
+    --shadow-c: var(--light-shadow-c);
 }
 
 .dark-theme {
@@ -164,6 +168,7 @@ li {
     --bgc-color: var(--dark-bgc);
     --box-bgc: var(--darkbox-bgc);
     --border-c: var(--dark-border-c);
+    --shadow-c: var(--dark-shadow-c);
 }
 
 html,
@@ -179,7 +184,7 @@ canvas {
 @font-face {
     font-family: "iconfont";
     /* Project id  */
-    src: url('./iconfont.ttf?t=1681176203736') format('truetype');
+    src: url('./iconfont.ttf?t=1686118353800') format('truetype');
 }
 
 .iconfont {

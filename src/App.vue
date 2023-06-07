@@ -1,19 +1,33 @@
 <template>
-  <!-- <div class="title-bar" :class="{'title-bar-small': titleBar}">
-    <div class="menu-icon" @click="titleBarClick">
-      <span class="iconfont cursor-p">&#xe61f;</span>
+  <div class="menu-bar" :class="{ 'menu-bar-small': titleBar }">
+    <div class="menu-bar-bg">
+      <div></div>
     </div>
-    <div class="search"></div>
-    <div class="bars">
-      <div class="light-b cursor-p" :class="{ 'light-d': !theme }" @click="themeCheack">
-        <div class="b-icon">
-          <span v-if="theme" class="iconfont">&#xe635;</span>
-          <span v-else class="iconfont">&#xe70f;</span>
-        </div>
+    <div class="menu-bar-i-box">
+      <div class="menu-bar-i" @click="titleBarClick">
+        <span class="iconfont cursor-p rotate">&#xe61f;</span>
       </div>
-      <span class="iconfont cursor-p">&#xe885;</span>
+      <div class="menu-bar-i">
+        <span class="iconfont cursor-p" style="font-size: 26px;">&#xe601;</span>
+      </div>
+      <div class="menu-bar-i" style="font-size: 24px;font-weight: 500;">
+        H5
+      </div>
+      <div class="menu-bar-i" style="font-size: 24px;font-weight: 500;">
+        CSS
+      </div>
+      <div class="menu-bar-i" @click="themeCheack">
+        <span v-if="theme" class="iconfont cursor-p">&#xe62a;</span>
+        <span v-else class="iconfont cursor-p" style="font-size: 38px;">&#xe635;</span>
+      </div>
+      <div class="menu-bar-i">
+        <span class="iconfont cursor-p">&#xe6b0;</span>
+      </div>
+      <div class="menu-bar-i" style="border: none;">
+        <span class="iconfont cursor-p">&#xe885;</span>
+      </div>
     </div>
-  </div> -->
+  </div>
   <RouterView />
 </template>
 
@@ -41,91 +55,138 @@ const titleBarClick = () => {
 }
 </script>
 
-<style scoped>
-.title-bar {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 1024;
+<style scoped lang="scss">
+@keyframes bgcRun {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 0%;
+  }
 }
 
-.title-bar .search {
-  flex: 1;
+@keyframes radiusRun {
+  0% {
+    border-radius: 88% 46% 86% 60%;
+  }
+  25% {
+    border-radius: 49% 82% 50% 85%;
+  }
+  50% {
+    border-radius: 64% 40% 64% 31%;
+  }
+  75% {
+    border-radius: 50% 90% 60% 93%;
+  }
+  100% {
+    border-radius: 88% 46% 86% 60%;
+  }
 }
 
-.title-bar .bars {
-  display: flex;
-  align-items: center;
+@keyframes scaleRun {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.6);
+  }
+  50% {
+    transform: scale(0.9);
+  }
+  75% {
+    transform: scale(0.7);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
-.title-bar .bars .light-b {
-  height: 28px;
-  width: 70px;
-  background-color: var(--box-bgc);
-  border-radius: 14px;
-  box-sizing: border-box;
-  box-shadow: 0 2px 6px 0 rgba(136, 148, 171, 0.2), 0 24px 20px -24px rgba(71, 82, 107, 0.1);
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-  position: relative;
-  user-select: none;
+.menu-bar {
+  position: fixed;
+  left: 10px;
+  top: 50%;
+  width: 60px;
+  transform: translateY(-50%);
+  border-radius: 6px;
+  z-index: 9999;
+
+  .menu-bar-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(45deg, #67C23A, #E6A23C, #F56C6C, #dcf56c, #6cf5ec, #6c97f5, #d36cf5, #E6A23C, #67C23A);
+    border-radius: 6px;
+    background-size: 5000%;
+    animation: bgcRun 8s linear infinite;
+  }
+
+  .menu-bar-bg::after {
+    content: " ";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(45deg, #67C23A, #E6A23C, #F56C6C, #dcf56c, #6cf5ec, #6c97f5, #d36cf5, #E6A23C, #67C23A);
+    filter: blur(20px);
+    background-size: 5000%;
+    animation: bgcRun 8s linear infinite;
+  }
+  .menu-bar-i-box {
+    width: 100%;
+    height: 424px;
+    overflow: hidden;
+    transition: height 0.5s;
+  }
+
+  .menu-bar-i {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: var(--text-color);
+    cursor: pointer;
+    transform: scale(0.8);
+    border-bottom: 1px solid var(--text-color);
+    transition: color 0.5s, border-color 0.5s;
+    text-shadow: 1px 1px var(--shadow-c);
+
+    .iconfont {
+      font-size: 30px;
+      transition: color 0.5s, transform 0.5s;
+      font-weight: 500;
+      user-select: none;
+    }
+  }
+  .menu-bar-i:hover {
+      animation: scaleRun 0.8s ease-in;
+    }
 }
 
-.title-bar .light-b .b-icon {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #fdd66b;
-  left: 4px;
-  transition: all 0.5s;
-}
+.menu-bar-small {
+  .rotate {
+    transform: rotate(180deg);
+    text-shadow: -1px -1px var(--shadow-c);
+  }
 
-.title-bar .b-icon .iconfont {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 18px;
-  line-height: 20px;
-  text-align: center;
-  color: var(--text-color);
-}
+  .menu-bar-i-box {
+    height: 60px;
+    overflow: hidden;
+    .menu-bar-i {
+      border: none;
+    }
+  }
 
-.title-bar .bars .light-d {
-  box-shadow: 0 2px 6px 0 rgba(232, 236, 243, 0.2), 0 24px 20px -24px rgba(163, 189, 250, 0.1);
-}
-
-.title-bar .light-d .b-icon {
-  left: 46px !important;
-  background-color: #8f9dac;
-}
-
-.title-bar .bars .light-d {
-  box-shadow: none !important;
-}
-
-.title-bar-small {
-  width: 50px;
-  height: 50px;
-  overflow: hidden;
-  display: block;
-}
-.menu-icon {
-  transform: rotate(0deg);
-  transition: all 0.4s ease-in-out;
-}
-.title-bar-small .menu-icon {
-  width: 28px;
-  height: 50px;
-  line-height: 50px;
-  user-select: none;
-  transform: rotate(180deg);
+  .menu-bar-bg {
+    // border-radius: 50%;
+    // transition: border-radius 0.5s 0.4s;
+    animation:bgcRun 8s linear infinite, radiusRun 6s linear infinite;
+  }
 }
 </style>
