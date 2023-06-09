@@ -59,15 +59,15 @@ export default class AddModel {
         // const gridHelper = new THREE.GridHelper(10, 10);
         // this.scene.add(gridHelper)
 
-        this.gui.add(this.cubep, 'x', 0, 40).onChange(() => {
-            this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
-        })
-        this.gui.add(this.cubep, 'y', 0, 40).onChange(() => {
-            this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
-        })
-        this.gui.add(this.cubep, 'z', 0, 40).onChange(() => {
-            this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
-        })
+        // this.gui.add(this.cubep, 'x', 0, 40).onChange(() => {
+        //     this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
+        // })
+        // this.gui.add(this.cubep, 'y', 0, 40).onChange(() => {
+        //     this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
+        // })
+        // this.gui.add(this.cubep, 'z', 0, 40).onChange(() => {
+        //     this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
+        // })
 
         this.canvas.addEventListener('mousedown', this.onPointerDown.bind(this));
     }

@@ -1,5 +1,11 @@
 export default {
-    loadResources: [],
+    loadResources: [
+        {
+            name: 'InitialIsland',
+            type: 'gltf',
+            path: '',
+        }
+    ],
     clickResources: {
         cube: {
             name: "cube",
