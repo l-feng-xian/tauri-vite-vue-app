@@ -24,9 +24,8 @@
                         <Lock v-else />
                     </el-icon>
                 </div>
-                <el-color-picker v-model="color" show-alpha :predefine="predefineColors" @change="colorChange" />
-                <el-input-number style="margin:0 10px;width: 110px;" v-model="brushSize" :min="1" :max="100"
-                    @change="brushSizeChange" />
+                <el-color-picker v-model="color" show-alpha :predefine="predefineColors" @active-change="colorChange" />
+                <el-input-number style="margin:0 10px;width: 110px;" v-model="brushSize" :min="1" :max="100"/>
             </div>
             <div class="uvedit-c-content">
                 <div class="uvedit-umap">
@@ -35,30 +34,29 @@
             </div>
         </div>
         <div class="uvedit-r"></div>
+        <div class="close" @click="closeUVedit"><el-icon><CloseBold /></el-icon></div>
     </div>
 </template>
     
 <script setup>
 import { ref, onMounted } from "vue";
+import router from "@/router";
 import EmitBus from "@/untils/emitBus.js";
+
+let cvs = null;
+let ctx = null;
 
 onMounted(() => {
     EmitBus.emit("getActiveModel");
-    console.log('==================================');
+    cvs = document.getElementById("uveditCanvas");
+    ctx = uveditCanvas.getContext("2d");
+
+    cvs.addEventListener("mousedown", canvasDrow)
 })
-
-EmitBus.on("drawModelTexture", (uv) => {
-    const uveditCanvas = document.getElementById("uveditCanvas");
-    const uveditCanvasCtx2d = uveditCanvas.getContext("2d");
-    let _xCross = uv.x * uveditCanvas.width;
-    let _yCross = uv.y * uveditCanvas.height;
-    uveditCanvasCtx2d.fillStyle = color.value
-
-    uveditCanvasCtx2d.rect(_xCross, _yCross, 30, 30);
-    uveditCanvasCtx2d.fill();
-    // EmitBus.emit("drawModelTextureOver");
-});
-
+const closeUVedit = () => {
+    router.go(-1);
+}
+//上传素材资源
 let resourceList = ref([]);
 const upResource = () => {
     const upload = document.createElement("input");
@@ -106,17 +104,42 @@ const predefineColors = ref([
 ])
 
 const colorChange = (e) => {
-    console.log(e);
+    color.value = e;
 }
 
 //改变画笔尺寸
-let brushSize = ref(0);
-const brushSizeChange = (e) => {
-    console.log(e);
+let brushSize = ref(10);
+
+EmitBus.on("drawModelTexture", (uv) => {
+    drowArc(uv.x * cvs.width, uv.y * cvs.height)
+});
+
+const isDrow = ref(false);
+const canvasDrow = () => {
+    isDrow.value = true;
+    cvs.addEventListener("mousemove", (e) =>{
+        if(isDrow.value) {
+            drowArc(e.offsetX, e.offsetY)
+        }
+    })
+    cvs.addEventListener("mouseup", (e) =>{
+        isDrow.value = false
+    })
 }
 
+//绘制圆
+const drowArc = (w,h) => {
+    ctx.beginPath();
+    ctx.fillStyle = color.value;
+    ctx.arc(w, h, brushSize.value/2, 0 , 2*Math.PI);
+    ctx.closePath();
+    ctx.fill();
+    EmitBus.emit("drawModelTextureOver");
+}
 
 
 </script>
     
-<style lang="scss" scoped>@import "@/assets/css/uvedit.scss";</style>
+<style lang="scss" scoped>
+@import "@/assets/css/uvedit.scss";
+</style>

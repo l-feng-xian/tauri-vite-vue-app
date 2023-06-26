@@ -1,7 +1,6 @@
 import * as THREE from "three"
 import InitInterface from "../initInterface";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import GASP from "gsap"
 
 export default class Camera {
     constructor() {
@@ -16,7 +15,7 @@ export default class Camera {
 
     createPerspectiveCamera() {
         this.perspectiveCamera = new THREE.PerspectiveCamera(35, this.sizes.aspect, 0.1, 1000);
-        this.perspectiveCamera.position.set(0, 10, 16);
+        this.perspectiveCamera.position.set(10, 10, 18);
         this.scene.add(this.perspectiveCamera);
     }
 
@@ -24,23 +23,8 @@ export default class Camera {
         this.controls = new OrbitControls(this.perspectiveCamera, this.canvas);
         this.controls.enableDamping = true;
         this.controls.enableZoom = true;
-        // controls.minDistance = 1;
-        // controls.maxDistance = 25;
-    }
-
-    resetControls() {
-        GASP.to(this.controls.target, {
-            x: 0,
-            y: 0,
-            z: 0,
-            duration: 1, ease: 'power1.out'
-        })
-        GASP.to(this.perspectiveCamera.position, {
-            x: 0,
-            y: 10,
-            z: 16,
-            duration: 1, ease: 'power1.out'
-        })
+        this.controls.minDistance = 1;
+        this.controls.maxDistance = 25;
     }
 
     setControlsLock(viewLock) {

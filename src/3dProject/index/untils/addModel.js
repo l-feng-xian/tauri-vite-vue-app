@@ -1,9 +1,10 @@
 import * as THREE from "three";
 import InitInterface from "../initInterface";
-import GUI from "lil-gui";
+// import GUI from "lil-gui";
 import GASP from "gsap";
 import router from "@/router";
 import EmitBus from "@/untils/emitBus.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 export default class AddModel {
     constructor() {
@@ -14,62 +15,102 @@ export default class AddModel {
         this.raycaster = new THREE.Raycaster();
         this.pointer = new THREE.Vector2();
         this.resources = this.initInterface.resources;
-        this.gui = new GUI({ container: document.getElementById("g_ui") });
-        this.cubep = {
-            x: 4,
-            y: 0.5,
-            z: 0
-        };
+        // this.gui = new GUI({ container: document.getElementById("g_ui") });
         this.activeModel = null;
+        this.loaded = 0;
+        this.items = {};
+        this.mixer = null;
+        this.actions = {};
 
-        this.setModels();
+        // this.setModels();
+        this.setLoaders();
+        this.startLoading();
+    }
+
+    setLoaders() {
+        this.loaders = {}
+        this.loaders.gltfLoader = new GLTFLoader();
+    }
+
+    startLoading() {
+        this.scene.add(new THREE.AmbientLight("#ffffff", 1));
+
+        this.sunLight = new THREE.DirectionalLight("#ffffff", 1);
+        this.scene.add(this.sunLight);
+        console.log(this.resources, 'this.resources');
+        for (const assets of this.resources.loadResources) {
+            if (assets.type === "gltf") {
+                this.loaders.gltfLoader.load(assets.path, (file) => {
+                    file.scene.scale.set(0.5, 0.5, 0.5);
+                    file.scene.name = assets.name;
+                    this.scene.add(file.scene);
+                    this.singleAssetLoaded(assets, file);
+                }, (xhr) => {
+                    EmitBus.emit("singleAssetLoadedEmit", xhr.loaded / xhr.total * 100)
+                })
+            }
+        }
+    }
+
+    singleAssetLoaded(assets, file) {
+        this.items[assets.name] = file;
+        this.loaded++;
+        if (this.loaded === this.resources.loadResources.length) {
+            console.log(this.items, 'ready');
+            this.createdAnimation();
+        }
+    }
+
+    createdAnimation() {
+        for (let i = 0; i < this.scene.children.length; i++) {
+            if (this.scene.children[i].name === "InitialIsland") {
+                console.log(this.scene.children[i]);
+                GASP.to(this.scene.children[i].scale, {
+                    x: 1,
+                    y: 1,
+                    z: 1,
+                    duration: 1, ease: 'power1.out'
+                })
+                GASP.to(this.scene.children[i].rotation, {
+                    y: Math.PI * 2,
+                    duration: 1, ease: 'power1.out'
+                })
+                return;
+            }
+        }
+    }
+
+    setAnimation(file) {
+        this.mixer = new THREE.AnimationMixer(file.scene);
+        console.log(file, 'setAnimation');
+        for (var i = 0; i < file.animations.length; i++) {
+            this.actions[file.animations[i].name] = this.mixer.clipAction(file.animations[i]);
+        }
     }
 
     setModels() {
-        this.scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+        const mashs = this.items['InitialIsland'].scene.children
+        for (let i = 0; i < mashs.length; i++) {
+            if (mashs[i].name === "画板") {
+                this.activeModel = mashs[i];
+                EmitBus.emit("getActiveModel");
+                router.push("uvEdit");
+                document.addEventListener('mousedown', this.canvasMousemove.bind(this))
+                return;
+            }
 
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-        dirLight.position.set(10, 5, 0);
-        dirLight.castShadow = true;
-        dirLight.shadow.camera.near = 1;
-        dirLight.shadow.camera.far = 20;
-        // dirLight.shadow.camera.right = 1;
-        // dirLight.shadow.camera.left = - 1;
-        // dirLight.shadow.camera.top = 1;
-        // dirLight.shadow.camera.bottom = - 1;
-        // dirLight.shadow.mapSize.width = 1024;
-        // dirLight.shadow.mapSize.height = 1024;
-        this.scene.add(dirLight);
-        // const helper = new THREE.CameraHelper(dirLight.shadow.camera);
-        // this.scene.add(helper);
+        }
+    }
 
-        this.cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ color: 0x00ffff }));
-        this.cube.castShadow = true;
-        this.cube.name = 'cube';
-        this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
-        this.scene.add(this.cube);
-
-        const ground = new THREE.Mesh(new THREE.BoxGeometry(10, 0.1, 10), new THREE.MeshStandardMaterial({ color: 0x00ffff }));
-        ground.receiveShadow = true;
-        ground.name = 'ground'
-        this.scene.add(ground);
-
-        // const axes = new THREE.AxesHelper(10);
-        // this.scene.add(axes);
-        // const gridHelper = new THREE.GridHelper(10, 10);
-        // this.scene.add(gridHelper)
-
-        // this.gui.add(this.cubep, 'x', 0, 40).onChange(() => {
-        //     this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
-        // })
-        // this.gui.add(this.cubep, 'y', 0, 40).onChange(() => {
-        //     this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
-        // })
-        // this.gui.add(this.cubep, 'z', 0, 40).onChange(() => {
-        //     this.cube.position.set(this.cubep.x, this.cubep.y, this.cubep.z);
-        // })
-
-        this.canvas.addEventListener('mousedown', this.onPointerDown.bind(this));
+    canvasMousemove() {
+        let onPointerMove = this.onPointerMove.bind(this);
+        this.canvas.addEventListener('mousemove', onPointerMove);
+        document.addEventListener('mouseup', () => {
+            if (onPointerMove) {
+                this.canvas.removeEventListener('mousemove', onPointerMove);
+                onPointerMove = null;
+            }
+        });
     }
 
     onPointerDown(event) {
@@ -115,7 +156,7 @@ export default class AddModel {
             this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
             this.pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
             this.raycaster.setFromCamera(this.pointer, this.camera.perspectiveCamera);
-            const intersects = this.raycaster.intersectObjects(this.scene.children, false);
+            const intersects = this.raycaster.intersectObjects(this.scene.children, true);
             if (intersects.length > 0) {
                 const activeModel = this.activeModel;
                 if (intersects[0].object.name === activeModel.name) {
@@ -124,6 +165,12 @@ export default class AddModel {
                     EmitBus.emit("drawModelTexture", uv);
                 }
             }
+        }
+    }
+
+    update(delta) {
+        if (this.mixer) {
+            this.mixer.update(delta);
         }
     }
 }

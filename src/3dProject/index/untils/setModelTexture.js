@@ -6,6 +6,7 @@ export default class SetModelTexture {
     constructor() {
         this.initInterface = new InitInterface();
         this.scene = this.initInterface.scene;
+        this.resources = this.initInterface.resources;
         this.uveditCanvas = null;
         this.uveditCanvasContext2D = null;
         this.activeModel = null;
@@ -16,14 +17,14 @@ export default class SetModelTexture {
     }
 
     setTexture(model) {
-        console.log(model, '----SetModelTexture-------');
+        const activeResource = this.resources.clickResources[model.name];
         this.uveditCanvas = document.getElementById("uveditCanvas");
         if(!this.uveditCanvas) return;
         this.uveditCanvasContext2D = this.uveditCanvas.getContext('2d');
 
         const uvtexture = document.createElement('img');
         uvtexture.crossOrigin = '';
-        uvtexture.src = model.uvtexture;
+        uvtexture.src = activeResource.uvtexture;
         uvtexture.addEventListener('load', () => {
             this.uveditCanvasWH.w = uvtexture.naturalWidth;
             this.uveditCanvasWH.h = uvtexture.naturalHeight;
@@ -35,14 +36,15 @@ export default class SetModelTexture {
             this.uveditCanvas.parentNode.style.transform = `scale(${340 / uvtexture.naturalWidth})`;
             
             this.activeModel = this.scene.getObjectByName(model.name);
+        
             const texture = new THREE.Texture(this.uveditCanvas, THREE.UVMapping, THREE.RepeatWrapping, THREE.RepeatWrapping);
             texture.needsUpdate = true;
-            this.activeModel.material = new THREE.MeshBasicMaterial({map: texture});
+            texture.flipY = false;
+            this.activeModel.material = new THREE.MeshStandardMaterial({map: texture});
         })
     }
 
     updete() {
         this.activeModel.material.map.needsUpdate = true;
-        // console.log( this.activeModel.material.map.needsUpdate = true);
     }
 }

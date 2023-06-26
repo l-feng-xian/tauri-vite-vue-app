@@ -21,11 +21,6 @@ const router = createRouter({
       ]
     },
     {
-      path: '/canvasEdit',
-      name: 'canvasEdit',
-      component: () => import('../views/canvasEdit.vue')
-    },
-    {
       path: '/:catchAll(.*)',
       name: 'error',
       component: () => import('../Error.vue'),

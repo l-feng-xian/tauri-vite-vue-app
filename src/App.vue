@@ -3,7 +3,7 @@
     <div class="menu-bar-bg">
       <div></div>
     </div>
-    <div class="menu-bar-i-box">
+    <!-- <div class="menu-bar-i-box">
       <div class="menu-bar-i" @click="titleBarClick">
         <span class="iconfont cursor-p rotate">&#xe61f;</span>
       </div>
@@ -26,7 +26,7 @@
       <div class="menu-bar-i" style="border: none;">
         <span class="iconfont cursor-p">&#xe885;</span>
       </div>
-    </div>
+    </div> -->
   </div>
   <RouterView />
 </template>

@@ -14,9 +14,11 @@
     "@tauri-apps/api": "^1.2.0",
     "element-plus": "^2.3.5",
     "gsap": "^3.11.4",
+    "n8ao": "^1.5.1",
     "pinia": "^2.0.33",
     "pinia-plugin-persistedstate": "^3.1.0",
     "pixi.js": "^7.2.4",
+    "postprocessing": "^6.31.2",
     "three": "^0.150.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
