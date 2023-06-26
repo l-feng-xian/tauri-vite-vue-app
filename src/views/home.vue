@@ -22,12 +22,9 @@ let initInterface = null;
 
 onMounted(() => {
   initInterface = new InitInterface(document.getElementById("threeDmodel"));
-  //
+  //加载进度
   EmitBus.on("singleAssetLoadedEmit", (val) => {
-    console.log(val);
-    if(val > 0) {
-      express.value = val.toFixed(0);
-    }
+    express.value = val
   })
   //获取选择模型
   EmitBus.on("getActiveModel", () => {
