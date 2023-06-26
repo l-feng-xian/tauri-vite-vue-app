@@ -25,7 +25,9 @@ onMounted(() => {
   //
   EmitBus.on("singleAssetLoadedEmit", (val) => {
     console.log(val);
-    express.value = val.toFixed(0);
+    if(val > 0) {
+      express.value = val.toFixed(0);
+    }
   })
   //获取选择模型
   EmitBus.on("getActiveModel", () => {
