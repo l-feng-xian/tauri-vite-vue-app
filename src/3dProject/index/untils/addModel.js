@@ -46,7 +46,7 @@ export default class AddModel {
                     this.scene.add(file.scene);
                     this.singleAssetLoaded(assets, file);
                 }, (xhr) => {
-                    EmitBus.emit("singleAssetLoadedEmit", xhr.loaded / xhr.total * 100)
+                    EmitBus.emit("singleAssetLoadedEmit", (xhr.loaded / xhr.total) * 100)
                 })
             }
         }

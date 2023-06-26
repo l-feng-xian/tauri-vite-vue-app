@@ -2,7 +2,7 @@
   <canvas id="threeDmodel"></canvas>
   <div id="g_ui" style="position: fixed; right: 0;top: 0;"></div>
   <div class="uv-edit-c" @click="editPenClick"><el-icon class="edit-pen"><EditPen /></el-icon></div>
-  <div class="loading" v-if="express != 100">
+  <div class="loading">
     <div class="loading-box">
       <p class="text">loading</p>
       <div class="express text">{{ express }}</div>
