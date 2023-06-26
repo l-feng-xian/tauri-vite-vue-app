@@ -37,7 +37,6 @@ export default class AddModel {
 
         this.sunLight = new THREE.DirectionalLight("#ffffff", 1);
         this.scene.add(this.sunLight);
-        console.log(this.resources, 'this.resources');
         for (const assets of this.resources.loadResources) {
             if (assets.type === "gltf") {
                 this.loaders.gltfLoader.load(assets.path, (file) => {
@@ -56,7 +55,6 @@ export default class AddModel {
         this.items[assets.name] = file;
         this.loaded++;
         if (this.loaded === this.resources.loadResources.length) {
-            console.log(this.items, 'ready');
             this.createdAnimation();
         }
     }
@@ -64,7 +62,6 @@ export default class AddModel {
     createdAnimation() {
         for (let i = 0; i < this.scene.children.length; i++) {
             if (this.scene.children[i].name === "InitialIsland") {
-                console.log(this.scene.children[i]);
                 GASP.to(this.scene.children[i].scale, {
                     x: 1,
                     y: 1,
@@ -82,7 +79,6 @@ export default class AddModel {
 
     setAnimation(file) {
         this.mixer = new THREE.AnimationMixer(file.scene);
-        console.log(file, 'setAnimation');
         for (var i = 0; i < file.animations.length; i++) {
             this.actions[file.animations[i].name] = this.mixer.clipAction(file.animations[i]);
         }

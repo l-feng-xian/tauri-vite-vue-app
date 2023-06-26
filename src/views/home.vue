@@ -2,7 +2,7 @@
   <canvas id="threeDmodel"></canvas>
   <div id="g_ui" style="position: fixed; right: 0;top: 0;"></div>
   <div class="uv-edit-c" @click="editPenClick"><el-icon class="edit-pen"><EditPen /></el-icon></div>
-  <div class="loading">
+  <div class="loading" v-if="expressOver">
     <div class="loading-box">
       <p class="text">loading</p>
       <div class="express text">{{ express }}</div>
@@ -17,6 +17,7 @@ import { ref, onMounted } from "vue";
 import EmitBus from "@/untils/emitBus.js";
 
 let express = ref(0);
+let expressOver = ref(true);
 
 let initInterface = null;
 
@@ -24,7 +25,10 @@ onMounted(() => {
   initInterface = new InitInterface(document.getElementById("threeDmodel"));
   //加载进度
   EmitBus.on("singleAssetLoadedEmit", (val) => {
-    express.value = val
+    express.value = val.toFixed(0);
+    if(express.value == 100) {
+      expressOver.value = false;
+    }
   })
   //获取选择模型
   EmitBus.on("getActiveModel", () => {
